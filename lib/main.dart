@@ -1,7 +1,15 @@
+import 'package:eventflow/screens/onboarding_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 void main() {
-  runApp(const MainApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(const MainApp());
+  });
 }
 
 class MainApp extends StatelessWidget {
@@ -9,10 +17,55 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'EventFlow',
+      home: OnboardingScreen(),
+      theme: ThemeData(
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            splashFactory: NoSplash.splashFactory,
+            shadowColor: WidgetStateProperty.all<Color>(Colors.transparent),
+            elevation: WidgetStateProperty.all<double>(0),
+            enableFeedback: false,
+            overlayColor: WidgetStateProperty.resolveWith<Color?>(
+              (Set<WidgetState> states) {
+                if (states.contains(WidgetState.pressed)) {
+                  return Colors.transparent;
+                }
+                return null;
+              },
+            ),
+          ),
+        ),
+        buttonTheme: const ButtonThemeData(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+        ),
+        iconButtonTheme: IconButtonThemeData(
+            style: IconButton.styleFrom(
+          splashFactory: NoSplash.splashFactory,
+          highlightColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+          focusColor: Colors.transparent,
+          enableFeedback: false,
+        )),
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            splashFactory: NoSplash.splashFactory,
+            shadowColor: WidgetStateProperty.all<Color>(Colors.transparent),
+            elevation: WidgetStateProperty.all<double>(0),
+            enableFeedback: false,
+            overlayColor: WidgetStateProperty.resolveWith<Color?>(
+              (Set<WidgetState> states) {
+                if (states.contains(WidgetState.pressed)) {
+                  return Colors.transparent;
+                }
+                return null;
+              },
+            ),
+          ),
         ),
       ),
     );

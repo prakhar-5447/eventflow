@@ -25,9 +25,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         Get.off(() => AuthScreen());
         return;
       }
-      
+
       Get.off(() => AuthScreen());
     } catch (error) {
+      Get.off(() => AuthScreen());
       showToast("Failed to login");
     }
   }
@@ -39,13 +40,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: Center(
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.8,
-          child: const Text(
-            "EventFlow",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 28,
-            ),
-            textAlign: TextAlign.center,
+          child: Image.asset(
+            "assets/eventflow.png",
+            fit: BoxFit.cover,
           ),
         ),
       ),

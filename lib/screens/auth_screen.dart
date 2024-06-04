@@ -1,4 +1,5 @@
 import 'package:eventflow/handlers/input_handler.dart';
+import 'package:eventflow/screens/bottom_navigation_tabs.dart';
 import 'package:eventflow/utils/colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -65,20 +66,21 @@ class AuthScreen extends StatelessWidget {
                         cursorWidth: 1.5,
                         onChanged: (value) {
                           if (!_isButtonEnabled.value &&
-                              (_password.text.isNotEmpty &&
-                                  value.length == 10)) {
+                              (_password.text.isNotEmpty && value.isNotEmpty)) {
                             _isButtonEnabled.value = true;
                             return;
                           }
-                          if (value.length != 10) {
+                          if (value.isEmpty) {
                             _isButtonEnabled.value = false;
                           }
                         },
                         enabled: !_isLoading.value,
                         keyboardType: TextInputType.emailAddress,
                         inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(10),
+                          FilteringTextInputFormatter.allow(
+                            RegExp('[a-zA-Z0-9@.]'),
+                          ),
+                          _formatter,
                         ],
                         controller: _email,
                         style: const TextStyle(
@@ -132,7 +134,7 @@ class AuthScreen extends StatelessWidget {
                         obscureText: !_isVisible.value,
                         onChanged: (value) {
                           if (!_isButtonEnabled.value &&
-                              (_email.text.length == 10 && value.isNotEmpty)) {
+                              (_email.text.isNotEmpty && value.isNotEmpty)) {
                             _isButtonEnabled.value = true;
                             return;
                           }
@@ -221,7 +223,7 @@ class AuthScreen extends StatelessWidget {
                           ),
                           onPressed: () async {
                             if (!_isLoading.value && _isButtonEnabled.value) {
-                              // _auth();
+                              Get.off(() => BottomNavigationScreen());
                             }
                           },
                           child: Obx(() {
@@ -285,7 +287,7 @@ class AuthScreen extends StatelessWidget {
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Color.fromARGB(57, 0, 0, 0),
+                                color: Color.fromARGB(50, 0, 0, 0),
                                 offset: Offset(1, 1),
                                 blurRadius: 2,
                                 spreadRadius: 0,
@@ -388,7 +390,7 @@ class AuthScreen extends StatelessWidget {
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             final url = Uri.parse(
-                                'https://prakhar-5447.github.io/rahobharat_website/termsandconditions');
+                                'https://prakhar-5447.github.io/eventflow/termsandconditions');
                             if (await canLaunchUrl(url)) {
                               await launchUrl(url);
                             }
@@ -405,7 +407,7 @@ class AuthScreen extends StatelessWidget {
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             final url = Uri.parse(
-                                'https://prakhar-5447.github.io/rahobharat_website/privacypolicy');
+                                'https://prakhar-5447.github.io/eventflow/privacypolicy');
                             if (await canLaunchUrl(url)) {
                               await launchUrl(url);
                             }

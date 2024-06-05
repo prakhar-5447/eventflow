@@ -295,6 +295,7 @@ class AuthScreen extends StatelessWidget {
                             ],
                           ),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
                                 "assets/google.png",
@@ -337,6 +338,7 @@ class AuthScreen extends StatelessWidget {
                             ],
                           ),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
                                 "assets/github.png",

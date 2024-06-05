@@ -51,18 +51,13 @@ class ExploreScreen extends StatelessWidget {
               size: 18,
             ),
           ),
-          Builder(
-            builder: (context) => IconButton(
-              style: IconButton.styleFrom(
-                padding: EdgeInsets.zero,
-              ),
-              onPressed: () {
-                Scaffold.of(context).openEndDrawer();
-              },
-              icon: const Icon(
-                Icons.menu_rounded,
-                size: 18,
-              ),
+          GestureDetector(
+            onTap: () {
+              Scaffold.of(context).openEndDrawer();
+            },
+            child: const Icon(
+              Icons.menu_rounded,
+              size: 18,
             ),
           ),
           const SizedBox(

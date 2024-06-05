@@ -276,9 +276,16 @@ class ExploreScreen extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Image.asset(
-                              "assets/hackathon_1_poster.png",
-                              fit: BoxFit.cover,
+                            ClipRRect(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(
+                                  7,
+                                ),
+                              ),
+                              child: Image.asset(
+                                "assets/hackathon_1_poster.png",
+                                fit: BoxFit.cover,
+                              ),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -446,9 +453,16 @@ class ExploreScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Image.asset(
-                          "assets/hackathon_1_poster.png",
-                          fit: BoxFit.fitWidth,
+                        ClipRRect(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(
+                              7,
+                            ),
+                          ),
+                          child: Image.asset(
+                            "assets/hackathon_1_poster.png",
+                            fit: BoxFit.fitWidth,
+                          ),
                         ),
                         const Padding(
                           padding: EdgeInsets.only(left: 5, right: 5),

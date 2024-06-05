@@ -1,7 +1,8 @@
-import 'dart:typed_data';
-
 import 'package:eventflow/controllers/bottom_navigation_controller.dart';
+import 'package:eventflow/screens/chats.dart';
+import 'package:eventflow/screens/events.dart';
 import 'package:eventflow/screens/explore.dart';
+import 'package:eventflow/screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,9 +12,9 @@ class BottomNavigationScreen extends StatelessWidget {
 
   final List<Widget> screens = [
     ExploreScreen(),
-    ExploreScreen(),
-    ExploreScreen(),
-    ExploreScreen(),
+    EventsScreen(),
+    ChatsScreen(),
+    ProfileScreen(),
   ];
   @override
   Widget build(BuildContext context) {

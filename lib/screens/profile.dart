@@ -1,4 +1,5 @@
 import 'package:eventflow/handlers/input_handler.dart';
+import 'package:eventflow/screens/account/email_screen.dart';
 import 'package:eventflow/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -438,7 +439,9 @@ class ProfileScreen extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     backgroundColor: Colors.white,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(() => EmailScreen());
+                  },
                   child: const Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

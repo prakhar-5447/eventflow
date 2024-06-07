@@ -1,5 +1,5 @@
 import 'package:eventflow/handlers/toast_handlers.dart';
-import 'package:eventflow/screens/auth_screen.dart';
+import 'package:eventflow/screens/auth/auth_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';

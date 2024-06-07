@@ -1,9 +1,9 @@
-import 'package:eventflow/screens/tabs/about.dart';
-import 'package:eventflow/screens/tabs/announcement.dart';
-import 'package:eventflow/screens/tabs/guidelines.dart';
-import 'package:eventflow/screens/tabs/roadmap.dart';
-import 'package:eventflow/screens/tabs/submission.dart';
-import 'package:eventflow/screens/tabs/teamtab.dart';
+import 'package:eventflow/screens/event/tabs/about.dart';
+import 'package:eventflow/screens/event/tabs/announcement.dart';
+import 'package:eventflow/screens/event/tabs/guidelines.dart';
+import 'package:eventflow/screens/event/tabs/roadmap.dart';
+import 'package:eventflow/screens/event/tabs/submission.dart';
+import 'package:eventflow/screens/event/tabs/teamtab.dart';
 import 'package:eventflow/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

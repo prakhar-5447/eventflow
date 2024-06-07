@@ -1,5 +1,5 @@
 import 'package:eventflow/handlers/input_handler.dart';
-import 'package:eventflow/screens/bottom_navigation_tabs.dart';
+import 'package:eventflow/screens/home/bottom_navigation_tabs.dart';
 import 'package:eventflow/utils/colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +84,7 @@ class AuthScreen extends StatelessWidget {
                         ],
                         controller: _email,
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 12,
                         ),
                         decoration: const InputDecoration(
                           filled: true,
@@ -115,7 +115,7 @@ class AuthScreen extends StatelessWidget {
                             ),
                           ),
                           hintStyle: TextStyle(
-                            fontSize: 18,
+                            fontSize: 12,
                             color: Colors.grey,
                           ),
                           hintText: 'Email',
@@ -151,7 +151,7 @@ class AuthScreen extends StatelessWidget {
                         ],
                         controller: _password,
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 12,
                         ),
                         decoration: InputDecoration(
                           filled: true,
@@ -183,7 +183,7 @@ class AuthScreen extends StatelessWidget {
                             ),
                           ),
                           hintStyle: const TextStyle(
-                            fontSize: 18,
+                            fontSize: 12,
                             color: Colors.grey,
                           ),
                           hintText: 'Password',
@@ -235,7 +235,7 @@ class AuthScreen extends StatelessWidget {
                                 : const Text(
                                     "Continue",
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   );

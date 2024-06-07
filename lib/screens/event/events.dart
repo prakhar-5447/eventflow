@@ -1,4 +1,4 @@
-import 'package:eventflow/screens/event_detail_screen.dart';
+import 'package:eventflow/screens/event/event_detail_screen.dart';
 import 'package:eventflow/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

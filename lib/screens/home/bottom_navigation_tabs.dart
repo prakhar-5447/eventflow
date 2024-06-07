@@ -1,8 +1,8 @@
 import 'package:eventflow/controllers/bottom_navigation_controller.dart';
-import 'package:eventflow/screens/chats.dart';
-import 'package:eventflow/screens/events.dart';
+import 'package:eventflow/screens/chat/chats.dart';
+import 'package:eventflow/screens/event/events.dart';
 import 'package:eventflow/screens/explore.dart';
-import 'package:eventflow/screens/profile.dart';
+import 'package:eventflow/screens/account/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

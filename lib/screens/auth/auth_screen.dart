@@ -1,5 +1,6 @@
 import 'package:eventflow/handlers/input_handler.dart';
-import 'package:eventflow/screens/home/bottom_navigation_tabs.dart';
+import 'package:eventflow/screens/auth/email_screen.dart';
+import 'package:eventflow/screens/bottom_navigation_tabs.dart';
 import 'package:eventflow/utils/colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -223,7 +224,7 @@ class AuthScreen extends StatelessWidget {
                           ),
                           onPressed: () async {
                             if (!_isLoading.value && _isButtonEnabled.value) {
-                              Get.off(() => BottomNavigationScreen());
+                              Get.to(() => EmailScreen());
                             }
                           },
                           child: Obx(() {

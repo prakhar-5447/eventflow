@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:eventflow/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,7 +21,7 @@ class ExploreScreen extends StatelessWidget {
         title: Row(
           children: [
             Image.asset(
-              "assets/google.png",
+              "assets/eventflow_logo.png",
               width: 35,
               height: 35,
             ),
@@ -51,13 +53,15 @@ class ExploreScreen extends StatelessWidget {
               size: 18,
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              Scaffold.of(context).openEndDrawer();
-            },
-            child: const Icon(
-              Icons.menu_rounded,
-              size: 18,
+          Builder(
+            builder: (context) => GestureDetector(
+              onTap: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+              child: const Icon(
+                Icons.menu_rounded,
+                size: 18,
+              ),
             ),
           ),
           const SizedBox(

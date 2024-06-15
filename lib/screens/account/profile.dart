@@ -4,6 +4,8 @@ import 'package:eventflow/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatelessWidget {
   final TextEditingController _name = TextEditingController(text: "John Doe");
@@ -42,19 +44,126 @@ class ProfileScreen extends StatelessWidget {
               size: 18,
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              Scaffold.of(context).openEndDrawer();
-            },
-            child: const Icon(
-              Icons.menu_rounded,
-              size: 18,
+          Builder(
+            builder: (context) => GestureDetector(
+              onTap: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+              child: const Icon(
+                Icons.menu_rounded,
+                size: 18,
+              ),
             ),
           ),
           const SizedBox(
             width: 20,
           ),
         ],
+      ),
+      endDrawer: Drawer(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+        shape: const RoundedRectangleBorder(),
+        child: ListView(
+          physics: const ClampingScrollPhysics(),
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 130, 170, 255),
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            ListTile(
+              dense: true,
+              leading: const Icon(
+                Icons.account_circle_outlined,
+                color: Colors.black,
+              ),
+              title: const Text(
+                'Account',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
+              ),
+              onTap: () async {
+                // Get.to(() => AccountScreen());
+              },
+            ),
+            ListTile(
+              dense: true,
+              leading: const Icon(
+                Icons.policy_outlined,
+                color: Colors.black,
+              ),
+              title: const Text(
+                'Privacy Policy',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
+              ),
+              onTap: () async {
+                final url = Uri.parse(
+                    'https://prakhar-5447.github.io/rahobharat_website/privacypolicy');
+                if (await canLaunchUrl(url)) {
+                  await launchUrl(url);
+                }
+              },
+            ),
+            ListTile(
+              dense: true,
+              leading: const Icon(
+                Icons.support_rounded,
+                color: Colors.black,
+              ),
+              title: const Text(
+                'Support',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
+              ),
+              onTap: () async {
+                final url = Uri.parse(
+                    'https://prakhar-5447.github.io/rahobharat_website/helpandsupport');
+                if (await canLaunchUrl(url)) {
+                  await launchUrl(url);
+                }
+              },
+            ),
+            ListTile(
+              dense: true,
+              leading: const Icon(
+                Icons.logout,
+                color: Colors.black,
+              ),
+              title: const Text(
+                'Logout',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
+              ),
+              onTap: () async {
+                final SharedPreferences prefs =
+                    await SharedPreferences.getInstance();
+                await prefs.remove('auth-token');
+                // Get.off(() => AuthScreen());
+              },
+            ),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
@@ -414,7 +523,9 @@ class ProfileScreen extends StatelessWidget {
                   onPressed: () {},
                   child: const Text(
                     "Save",
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
                   ),
                 ),
               ),

@@ -104,6 +104,9 @@ class ChatsScreen extends StatelessWidget {
                   ],
                 );
               }),
+              const SizedBox(
+                height: 100,
+              ),
             ],
           ),
         ),

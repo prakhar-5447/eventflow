@@ -1,7 +1,7 @@
 import 'package:eventflow/controllers/bottom_navigation_controller.dart';
 import 'package:eventflow/screens/chat/chats.dart';
 import 'package:eventflow/screens/event/events.dart';
-import 'package:eventflow/screens/explore.dart';
+import 'package:eventflow/screens/home/explore.dart';
 import 'package:eventflow/screens/account/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -124,6 +124,7 @@ class BottomNavigationScreen extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
+        focusElevation: 0,
         shape: const CircleBorder(),
         elevation: 0,
         splashColor: Colors.transparent,

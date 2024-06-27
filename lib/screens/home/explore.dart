@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:eventflow/screens/search/search_screen.dart';
 import 'package:eventflow/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -197,45 +198,50 @@ class ExploreScreen extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 15,
-                    ),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(
-                          7,
-                        ),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => SearchScreen());
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 15,
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromARGB(50, 0, 0, 0),
-                          offset: Offset(1, 1),
-                          blurRadius: 2,
-                          spreadRadius: 0,
-                        ),
-                      ],
-                    ),
-                    child: const Row(
-                      children: [
-                        Icon(
-                          Icons.search_rounded,
-                          size: 18,
-                          color: AppColors.grey,
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          "Find Events",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: AppColors.grey,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(
+                            7,
                           ),
                         ),
-                      ],
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromARGB(50, 0, 0, 0),
+                            offset: Offset(1, 1),
+                            blurRadius: 2,
+                            spreadRadius: 0,
+                          ),
+                        ],
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(
+                            Icons.search_rounded,
+                            size: 18,
+                            color: AppColors.grey,
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            "Find Events",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: AppColors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -433,79 +439,64 @@ class ExploreScreen extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            Obx(() {
-              return GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 15,
-                    mainAxisSpacing: 10,
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 0,
-                  ),
-                  itemCount: _upcoming.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ClipRRect(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(
-                              7,
-                            ),
-                          ),
-                          child: Image.asset(
-                            "assets/hackathon_1_poster.png",
-                            fit: BoxFit.fitWidth,
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 5, right: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Hackathon",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w500,
+            Center(
+              child: Obx(() {
+                final width = MediaQuery.of(context).size.width;
+                return Wrap(
+                    runSpacing: 10,
+                    spacing: 12,
+                    direction: Axis.horizontal,
+                    children:
+                        List<Widget>.generate(_upcoming.length, (int index) {
+                      return SizedBox(
+                        width: width / 2 - 26,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ClipRRect(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(
+                                  7,
                                 ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                              child: Image.asset(
+                                "assets/hackathon_1_poster.png",
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 5, right: 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(
-                                    Icons.access_time_rounded,
-                                    size: 10,
-                                  ),
                                   Text(
-                                    ": 05 - 06 May",
+                                    "Hackathon",
                                     style: TextStyle(
                                       fontSize: 12,
+                                      fontWeight: FontWeight.w500,
                                     ),
+                                  ),
+                                  Text(
+                                    "Join us on the hackathon for exciting rewards and more..",
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                    textAlign: TextAlign.justify,
                                   ),
                                 ],
                               ),
-                              Text(
-                                "Join us on the hackathon for exciting rewards and more. Also invite your friends and join together in group...",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w300,
-                                ),
-                                textAlign: TextAlign.justify,
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    );
-                  });
-            }),
+                      );
+                    }));
+              }),
+            ),
+            const SizedBox(
+              height: 100,
+            ),
           ],
         ),
       ),

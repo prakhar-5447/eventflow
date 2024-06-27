@@ -24,6 +24,7 @@ class ProfileScreen extends StatelessWidget {
   final TextEditingController _name = TextEditingController(text: "John Doe");
   final _formatter = SingleSpaceInputFormatter();
   final _isButtonEnabled = false.obs;
+  var _imagePickerStatus = false;
   final _isLoading = false.obs;
   final List<String> imgList = [
     'assets/hackathon_1_poster.png',
@@ -116,7 +117,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 options: CarouselOptions(
                   height: 100.0,
-                  viewportFraction: 0.3,
+                  viewportFraction: 0.4,
                   initialPage: 0,
                   autoPlay: false,
                   enableInfiniteScroll: false,
@@ -251,6 +252,8 @@ class ProfileScreen extends StatelessWidget {
   }
 
   void _importImage() async {
+    if (_imagePickerStatus) return;
+    _imagePickerStatus = true;
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
@@ -279,10 +282,12 @@ class ProfileScreen extends StatelessWidget {
       );
       if (croppedImage != null) {
         imagePath.value = croppedImage.path;
+        _imagePickerStatus = false;
         return;
       }
     }
     imagePath.value = '';
     showToast("Failed to select image");
+    _imagePickerStatus = false;
   }
 }

@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:eventflow/handlers/input_handler.dart';
+import 'package:eventflow/handlers/toast_handlers.dart';
+import 'package:eventflow/screens/auth/profile.dart';
 import 'package:eventflow/screens/auth/email_screen.dart';
-import 'package:eventflow/screens/bottom_navigation_tabs.dart';
+import 'package:eventflow/services/auth_services.dart';
 import 'package:eventflow/utils/colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 class AuthScreen extends StatelessWidget {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
+  final AuthServices _authServices = AuthServices();
   final _formatter = SingleSpaceInputFormatter();
   final _isButtonEnabled = false.obs;
   final _isLoading = false.obs;
@@ -195,6 +200,7 @@ class AuthScreen extends StatelessWidget {
                                     ? Icons.visibility_rounded
                                     : Icons.visibility_off_rounded,
                                 color: Colors.grey,
+                                size: 16,
                               );
                             }),
                             onPressed: () {
@@ -209,7 +215,7 @@ class AuthScreen extends StatelessWidget {
                     ),
                     SizedBox(
                       width: double.infinity,
-                      height: 60,
+                      height: 50,
                       child: Obx(() {
                         return ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -224,7 +230,7 @@ class AuthScreen extends StatelessWidget {
                           ),
                           onPressed: () async {
                             if (!_isLoading.value && _isButtonEnabled.value) {
-                              Get.to(() => EmailScreen());
+                              _auth();
                             }
                           },
                           child: Obx(() {
@@ -300,8 +306,8 @@ class AuthScreen extends StatelessWidget {
                             children: [
                               Image.asset(
                                 "assets/google.png",
-                                width: 20,
-                                height: 20,
+                                width: 18,
+                                height: 18,
                               ),
                               const SizedBox(
                                 width: 10,
@@ -309,7 +315,7 @@ class AuthScreen extends StatelessWidget {
                               const Text(
                                 "Sign in with Google",
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   color: Colors.black,
                                 ),
                               ),
@@ -343,8 +349,8 @@ class AuthScreen extends StatelessWidget {
                             children: [
                               Image.asset(
                                 "assets/github.png",
-                                width: 20,
-                                height: 20,
+                                width: 18,
+                                height: 18,
                               ),
                               const SizedBox(
                                 width: 10,
@@ -352,7 +358,7 @@ class AuthScreen extends StatelessWidget {
                               const Text(
                                 "Sign in with Github",
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   color: Colors.white,
                                 ),
                               ),
@@ -381,7 +387,7 @@ class AuthScreen extends StatelessWidget {
                   text: TextSpan(
                     text: 'By continuing, you agree to our ',
                     style: const TextStyle(
-                      fontSize: 12,
+                      fontSize: 10,
                       color: Color.fromARGB(255, 175, 175, 175),
                     ),
                     children: [
@@ -425,5 +431,51 @@ class AuthScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _auth() async {
+    _isLoading.value = true;
+    final email = _email.text;
+    final password = _password.text;
+
+    try {
+      dynamic response = await _authServices.auth(email, password);
+      if (response == null) {
+        _isLoading.value = false;
+        return;
+      }
+
+      if (!response["success"]) {
+        _isLoading.value = false;
+        showToast(response["message"]);
+        return;
+      }
+
+      if (!response["verified"]) {
+        Get.to(() => EmailScreen(email: email, password: password));
+        _isLoading.value = false;
+        return;
+      }
+
+      if (!response["status"]) {
+        Get.off(() => ProfileScreen());
+        _isLoading.value = false;
+        return;
+      }
+      _isLoading.value = false;
+    } catch (error) {
+      _isLoading.value = false;
+      if (error is SocketException) {
+        return;
+      }
+      if (error is HttpException) {
+        if (error.message == "401") {
+          _password.text = "";
+          _isButtonEnabled.value = false;
+          showToast("Failed to login");
+          return;
+        }
+      }
+    }
   }
 }

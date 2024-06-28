@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:eventflow/controllers/bottom_navigation_controller.dart';
+import 'package:eventflow/controllers/user_controller.dart';
 import 'package:eventflow/screens/chat/chats.dart';
 import 'package:eventflow/screens/event/events.dart';
 import 'package:eventflow/screens/home/explore.dart';
@@ -9,6 +12,7 @@ import 'package:get/get.dart';
 class BottomNavigationScreen extends StatelessWidget {
   final BottomNavigationBarController controller =
       Get.put(BottomNavigationBarController());
+  final UserController usercontroller = Get.put(UserController());
 
   final List<Widget> screens = [
     ExploreScreen(),
@@ -89,10 +93,10 @@ class BottomNavigationScreen extends StatelessWidget {
                   height: 30,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      width: 1.5,
+                      width: 1,
                       color: controller.selectedIndex.value == 3
                           ? Colors.black
-                          : Colors.transparent,
+                          : Colors.grey.withOpacity(0.5),
                     ),
                     borderRadius: const BorderRadius.all(
                       Radius.circular(100),
@@ -104,16 +108,11 @@ class BottomNavigationScreen extends StatelessWidget {
                         80,
                       ),
                     ),
-                    // child: Image.memory(
-                    //   Uint8List(0),
-                    //   fit: BoxFit.cover,
-                    //   filterQuality: FilterQuality.low,
-                    //   colorBlendMode: BlendMode.darken,
-                    // ),
-                    child: Image.asset(
-                      "assets/profile_dummy.png",
-                      width: 30,
-                      height: 30,
+                    child: Image.memory(
+                      usercontroller.avatar ?? Uint8List(0),
+                      fit: BoxFit.cover,
+                      filterQuality: FilterQuality.low,
+                      colorBlendMode: BlendMode.darken,
                     ),
                   ),
                 );

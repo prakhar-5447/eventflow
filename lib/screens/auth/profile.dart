@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:eventflow/controllers/user_controller.dart';
 import 'package:eventflow/handlers/input_handler.dart';
 import 'package:eventflow/handlers/toast_handlers.dart';
 import 'package:eventflow/screens/bottom_navigation_tabs.dart';
+import 'package:eventflow/services/auth_services.dart';
 import 'package:eventflow/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,10 +23,11 @@ class ImageSliderController extends GetxController {
 
 class ProfileScreen extends StatelessWidget {
   final ImageSliderController controller = Get.put(ImageSliderController());
-  final TextEditingController _name = TextEditingController(text: "John Doe");
+  final TextEditingController _name = TextEditingController();
+  final AuthServices _authServices = AuthServices();
   final _formatter = SingleSpaceInputFormatter();
-  final _isButtonEnabled = false.obs;
   var _imagePickerStatus = false;
+  final _isEnabled = false.obs;
   final _isLoading = false.obs;
   final List<String> imgList = [
     'assets/hackathon_1_poster.png',
@@ -139,19 +142,19 @@ class ProfileScreen extends StatelessWidget {
                   return TextField(
                     cursorWidth: 1.5,
                     onChanged: (value) {
-                      if (!_isButtonEnabled.value && (value.isNotEmpty)) {
-                        _isButtonEnabled.value = true;
+                      if (!_isEnabled.value && (value.isNotEmpty)) {
+                        _isEnabled.value = true;
                         return;
                       }
                       if (value.isEmpty) {
-                        _isButtonEnabled.value = false;
+                        _isEnabled.value = false;
                       }
                     },
                     enabled: !_isLoading.value,
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.name,
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(
-                        RegExp('[a-zA-Z0-9@.]'),
+                        RegExp('[a-zA-Z ]'),
                       ),
                       _formatter,
                     ],
@@ -220,28 +223,44 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.blue,
-                      foregroundColor: Colors.white,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(
-                            5,
+                  child: Obx(() {
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: !_isLoading.value && _isEnabled.value
+                            ? AppColors.blue
+                            : AppColors.disabledColor,
+                        foregroundColor: _isEnabled.value
+                            ? Colors.white
+                            : const Color.fromARGB(255, 230, 230, 230),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(
+                              5,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    onPressed: () {
-                      Get.offAll(() => BottomNavigationScreen());
-                    },
-                    child: const Text(
-                      "Save",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
+                      onPressed: () {
+                        if (!_isLoading.value && _isEnabled.value) {
+                          _profile();
+                        }
+                      },
+                      child: Obx(() {
+                        return _isLoading.value
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 3,
+                              )
+                            : const Text(
+                                "Save",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              );
+                      }),
+                    );
+                  }),
                 ),
               ],
             ),
@@ -289,5 +308,45 @@ class ProfileScreen extends StatelessWidget {
     imagePath.value = '';
     showToast("Failed to select image");
     _imagePickerStatus = false;
+  }
+
+  void _profile() async {
+    _isLoading.value = true;
+    final name = _name.text;
+
+    try {
+      dynamic response = await _authServices.profile(imagePath.value, name);
+      if (response == null) {
+        _isLoading.value = false;
+        return;
+      }
+
+      if (!response["success"]) {
+        _isLoading.value = false;
+        showToast(response["message"]);
+        return;
+      }
+      
+      final userController = Get.find<UserController>();
+      userController.name = name;
+      final File imageFile = File(imagePath.value);
+      final Uint8List imageBytes = await imageFile.readAsBytes();
+      userController.avatar = imageBytes;
+      Get.offAll(() => BottomNavigationScreen());
+      _isLoading.value = false;
+      return;
+    } catch (error) {
+      _isLoading.value = false;
+      if (error is SocketException) {
+        return;
+      }
+      if (error is HttpException) {
+        if (error.message == "401") {
+          _isEnabled.value = false;
+          showToast("Failed to verify");
+          return;
+        }
+      }
+    }
   }
 }

@@ -1,15 +1,19 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:eventflow/controllers/user_controller.dart';
 import 'package:eventflow/handlers/input_handler.dart';
 import 'package:eventflow/handlers/toast_handlers.dart';
 import 'package:eventflow/screens/auth/profile.dart';
 import 'package:eventflow/screens/auth/email_screen.dart';
+import 'package:eventflow/screens/bottom_navigation_tabs.dart';
 import 'package:eventflow/services/auth_services.dart';
 import 'package:eventflow/utils/colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AuthScreen extends StatelessWidget {
@@ -457,11 +461,21 @@ class AuthScreen extends StatelessWidget {
         return;
       }
 
+      final userController = Get.find<UserController>();
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('auth-token', response["auth-token"]);
       if (!response["status"]) {
+        userController.id = response["_id"];
         Get.off(() => ProfileScreen());
         _isLoading.value = false;
         return;
       }
+
+      userController.id = response["data"]["_id"];
+      final avatar = Uint8List.fromList(response["data"]["avatar"]);
+      userController.avatar = avatar;
+      userController.name = response["data"]["name"];
+      Get.offAll(() => BottomNavigationScreen());
       _isLoading.value = false;
     } catch (error) {
       _isLoading.value = false;

@@ -1,3 +1,4 @@
+import 'package:eventflow/controllers/user_controller.dart';
 import 'package:eventflow/screens/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +20,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      initialBinding: InitialBindings(),
       title: 'EventFlow',
       home: OnboardingScreen(),
       theme: ThemeData(
@@ -69,5 +71,12 @@ class MainApp extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class InitialBindings extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(UserController());
   }
 }

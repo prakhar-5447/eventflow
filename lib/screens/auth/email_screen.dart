@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:eventflow/controllers/user_controller.dart';
 import 'package:eventflow/handlers/toast_handlers.dart';
 import 'package:eventflow/screens/auth/profile.dart';
 import 'package:eventflow/services/auth_services.dart';
@@ -185,6 +186,9 @@ class EmailScreen extends StatelessWidget {
 
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('auth-token', response["auth-token"]);
+      final userController = Get.find<UserController>();
+      userController.id = response["_id"];
+
       Get.to(() => ProfileScreen());
       _isLoading.value = false;
       return;
